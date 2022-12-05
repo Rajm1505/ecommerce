@@ -1,11 +1,12 @@
 from email import message
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect,HttpResponse
     
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
 from .forms import UserForm
-from .models import Products
+from .models import Products, Cart, User
+
 
 # Create your views here.
 def index(request):
@@ -61,9 +62,46 @@ def productDetails(request):
 
     return render(request,'productdetails.html',context=context)
 
+def productsPage(request):
+    query = str(request.POST.get('searchquery')).strip()
+    print("query:",query)
+    if query is None or query =='':
+        return redirect('/')
+    
+    products = Products.objects.filter(name__icontains= query)
+    print("products",products)
+    context = {'products': products,'query':query}
+    return render(request,'productspage.html',context=context)
+
 
 def viewCart(request):
-    return render(request, 'cart.html')
+    uid =  User.objects.get(uid = request.user.uid) 
+    cart = Cart.objects.filter(uid=uid)
+    print(cart)
+    context = {'cart' : cart}
+    
+    return render(request, 'cart.html' ,context=context)
+
+
+def addToCart(request):
+    id = request.GET.get('id')
+    pid = Products.objects.get(pid = id)
+    uid =  User.objects.get(uid = request.user.uid) 
+    try:
+        cart = Cart.objects.get(pid = pid,uid=uid)
+    except:
+        cart = Cart(uid = uid,pid=pid)
+        cart.save()
+    return redirect(f'/productdetails?id={id}')
+
+def removeFromCart(request):
+    id = request.GET.get('id')
+    try:
+        cart = Cart.objects.get(pid = id,uid = request.user.uid)
+        cart.delete()
+    except:
+        pass
+    return redirect('/viewcart')
 
 def contact(request):
     return render(request, 'contact.html')
