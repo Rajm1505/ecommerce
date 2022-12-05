@@ -34,11 +34,11 @@ Product Details
             <div class="carousel-inner" >
                 
                 <div class="carousel-item active ">
-                    <img src="{{product.image1}}" class="d-block w-100 img-fluid" alt="..." height="169px" width="150px">
+                    <img src="{{product.image1}}" class="d-block w-100 img-fluid productdetails-img" alt="..." >
                     
                 </div>
                 <div class="carousel-item ">
-                    <img src="{{product.image2}}" class="d-block w-100" alt="..."height="169px" width="150px">
+                    <img src="{{product.image2}}" class="d-block w-100 img-fluid productdetails-img" alt="...">
                     
                 </div>
             </div>
@@ -50,6 +50,7 @@ Product Details
                 <span class="carousel-control-next-icon bg-dark" aria-hidden="true"></span>
                 <span class="visually-hidden">Next</span>
             </button>
+            <a  class="btn btn-primary" href="addtocart?id={{product.pid}}">Add to Cart</a>
         </div>
     </div>
     </div>

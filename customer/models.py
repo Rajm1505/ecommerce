@@ -41,4 +41,17 @@ class Products(models.Model):
     def __str__(self):
         return self.name
 
+
+class Cart(models.Model):
+    uid = models.ForeignKey(User,on_delete=models.CASCADE)
+    pid = models.ForeignKey(Products, on_delete=models.CASCADE)
+    
+
+    
+
+    def __str__(self):
+        return self.uid.name
+
+   
+
   

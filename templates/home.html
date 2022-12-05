@@ -59,8 +59,8 @@ Home
     {% for product in products  %}
     
     <a href="productdetails?id={{product.pid}}" class="">
-    <div class="card border border-dark m-5 " style="width: 18rem;">
-      <img src="{{product.image1}}" class="card-img-top img-fluid" alt="...">
+    <div class="card border border-dark m-5  " style="width: 18rem;">
+      <img src="{{product.image1}}" class="card-img-top img-fluid productdetails-img  " alt="...">
       <div class="dropdown-divider"></div>
       <div class="card-body">
         <h5 class="card-title text-dark">{{product.name}}</h5>
