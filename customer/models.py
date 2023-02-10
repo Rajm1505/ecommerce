@@ -19,6 +19,22 @@ class User(AbstractUser):
     def __str__(self):
         return str(self.uid)
 
+
+# class Userdetails(models.Model):
+
+#     uid = models.OneToOneField(User,primary_key=True,on_delete=models.CASCADE)
+
+#     address = models.CharField(max_length=255, default = None )
+
+
+#     def __str__(self):
+#         return self.name
+
+
+
+
+
+
 category_choices = (
     ("accessories","Accessories"),
     ("clothing","Clothing"),

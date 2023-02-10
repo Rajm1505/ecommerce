@@ -1,0 +1,32 @@
+{% extends 'customer/base.html' %}
+{% block title %} 
+Cart
+{% endblock title %}
+
+{% block content %}
+<body>
+{% include 'customer/navbar.html' %}
+
+
+<div class="container mt-5" >
+
+    
+        <div class="list-group">
+            {% for product in cart %}
+            <span class="list-group-item list-group-item-action mb-3"> 
+                <a href="productdetails?id={{product.pid.pid}}">  {{product.pid.name}} </a>
+                <a class="btn btn-sm btn-danger  float-end" href="removefromcart?id={{product.pid.pid}}">Remove from Cart</a>
+            </span>
+            
+            {% endfor %}
+        </div>
+
+        <div>
+            <a href="checkout/address?source=cart" class="btn btn-success ">Checkout</a>
+        </div>
+</div>
+
+
+
+{% endblock content %}
+

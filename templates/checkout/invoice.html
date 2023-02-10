@@ -1,0 +1,15 @@
+{% extends '../customer/base.html' %}
+{% block title %} 
+Home
+{% endblock title %}
+{% block head %}
+{% endblock head %}
+
+{% block content %}
+<body>
+{% include '../customer/navbar.html' %}
+    
+{{request.session.orderid}}
+
+{% endblock content %}
+

@@ -1,0 +1,45 @@
+{% extends 'customer/base.html' %}
+{% block title %} 
+
+{% endblock title %}
+
+{% block content %}
+<body>
+{% include 'customer/navbar.html' %}
+
+<div class="container mt-5" >
+    {% for message in messages  %}
+    <span>{{message}}</span>
+    {% endfor %}
+
+    
+    <div class="list-group">
+        {% for product in products %}
+        <div class="list-group-item list-group-item-action mb-3 d-flex"> 
+            <div class="d-flex w-100">
+
+                <div class="img-div">
+                    <img
+                    src="{{product.image1}}"
+                    width="70"
+                    />
+                </div>
+                <div class=" ms-5 mt-2 ">
+                    <a class="text-dark display-6 me-3" href="productdetails?id={{product.pid}}" style="text-decoration:none;"> <strong>{{product.name}}</strong></a>
+                    <p class="text-muted mb-0">{{product.description}}</p>
+                </div>
+                
+            </div>
+            <div class="float-end mt-4 ">
+                <span class="text-success" style="font-size: 20px;">₹{{product.price}}</span>
+            </div>
+        </div>        
+            {% endfor %}
+    </div>
+</div>
+
+    
+{{product.name}}
+
+
+{% endblock content %}
