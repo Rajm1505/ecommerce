@@ -1,24 +1,14 @@
 .env
 env
-
+rough
 
 
 #pycache
-customer/__pycache__/__init__.cpython-310.pyc
-customer/__pycache__/admin.cpython-310.pyc
-customer/__pycache__/apps.cpython-310.pyc
-customer/__pycache__/forms.cpython-310.pyc
-customer/__pycache__/models.cpython-310.pyc
-customer/__pycache__/urls.cpython-310.pyc
-customer/__pycache__/views.cpython-310.pyc
-customer/migrations/__pycache__/__init__.cpython-310.pyc
-customer/migrations/__pycache__/0001_initial.cpython-310.pyc
-customer/migrations/__pycache__/0002_products.cpython-310.pyc
-customer/migrations/__pycache__/0003_products_category_alter_products_image1_and_more.cpython-310.pyc
-ecommerce/__pycache__/__init__.cpython-310.pyc
-ecommerce/__pycache__/settings.cpython-310.pyc
-ecommerce/__pycache__/urls.cpython-310.pyc
-ecommerce/__pycache__/wsgi.cpython-310.pyc
-customer/migrations/__pycache__/0003_products_category_alter_products_image1_and_more.cpython-310.pyc
-customer/__pycache__/views.cpython-310.pyc
+customer/__pycache__/
+customer/migrations/
+ecommerce/__pycache__/
+customer/migrations/__pycache__/
+customer/__pycache__/
 
+checkout/__pycache__/
+checkout/migrations/__pycache__/

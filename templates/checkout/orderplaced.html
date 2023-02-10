@@ -1,0 +1,22 @@
+{% extends '../customer/base.html' %}
+{% block title %} 
+Home
+{% endblock title %}
+{% block head %}
+
+{% endblock head %}
+
+{% block content %}
+<body>
+{% include '../customer/navbar.html' %}
+
+{% for message in messages  %}
+<h2 class="text-{{message.tags}}" >{{message}}</h2>
+
+{{request.session.cart}}
+
+{% endfor %}
+
+
+{% endblock content %}
+

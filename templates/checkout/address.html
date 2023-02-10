@@ -1,0 +1,281 @@
+{% extends '../customer/base.html' %} 
+{% block title %} Home {% endblock title%}
+{% block head %}
+
+{% endblock head %}
+ {% block content %}
+<body>
+{% include '../customer/navbar.html' %}
+
+<div class="container mt-5 d-flex"  >
+
+    <div class="addresslist w-75">
+
+      <div class="list-group " id="addresslist">
+        {% for address in addresses %}
+        <span class="list-group-item list-group-item-action mb-3"> 
+          <strong>{{address.name}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{address.phone}}</strong></br>
+          <p>{{address.address}}&nbsp;&nbsp;  {{address.city}}&nbsp;&nbsp; {{address.state}} - <strong>{{address.pincode}}</strong></p>
+          {% if product %}
+          <a class="btn btn-md btn-warning float-end " onclick={confirmOrder({{address.address}})} href="placeorder?aid={{address.aid}}&pid={{product.pid}}&source={{source}}">Deliver here</a>
+          {% else %}
+          <a class="btn btn-md btn-warning float-end " onclick={confirmOrder({{address.address}})} href="placeorder?aid={{address.aid}}&source={{source}}">Deliver here</a>
+          {% endif %}
+          <button type="button" onclick=editAddress({{address.aid}})   class="btn btn-md btn-info float-end me-3" style="display: block;">Edit</button>
+        </span>
+        
+        {% endfor %}
+      </div>
+      {% for message in messages %}
+      <p class="my-3 bg-{{ message.tags }} ">{{ message }}</p>
+      {% endfor %} {{form.errors }}
+    </div>
+    {% load my_filters %}
+    {% if product %}
+    <div class="container pricedetails ms-5 w-50">
+      <div class="card w-100" >
+        <div class="card-body">
+          <h3 class="opacity-75 pb-3">Order Summary</h3>
+          <div class="row mb-3">
+            <span class="col float-start"><strong> Product</strong></span>
+            <span class="col float-end">{{product.name}}</span>
+          </div>
+          
+          <div class="row mb-3">
+            <span class="col float-start"><strong> Price</strong></span>
+            <span class="col  float-end">₹{{product.price}}</span>
+          </div>
+          {% with product.price|deliveryCharges as deliverycharges %}
+          <div class="row mb-3">
+            <span class="col float-start"><strong>Delivery Charges</strong></span>
+            {% if deliverycharges == "FREE" %}
+            <span class="col text-success float-end">{{ deliverycharges }}</span>
+            {% else %}
+            <span class="col text float-end">₹{{ deliverycharges }}</span>
+            {% endif %}
+            
+          </div>
+          <hr class="bg-success border-2 border-top border-success"></hr>
+          <div class="row mb-3">
+            <span class="col float-start"><strong>Total</strong></span>
+            <span class="col  float-end">₹{{ product.price|total:deliverycharges }}</span>
+          </div>
+          
+          {% endwith %}
+         
+        </div>
+      </div>
+     
+    </div>
+    {% endif %}
+    {% if cart %}
+    <div class="container pricedetails ms-5 w-50">
+      <div class="card w-100" >
+        <div class="card-body">
+          <h3 class="opacity-75 pb-3">Order Summary</h3>
+          
+          <div class="row mb-3">
+            <span class="col float-start"><strong> Products</strong></span>
+            <span class="col float-start"><strong> Price</strong></span>
+          </div>
+          {% for product in cart %}
+          
+          <div class="row mb-3">
+            <span class="col float-end">{{product.pid.name}}</span>
+            <span class="col  float-end">₹{{product.pid.price}}</span>
+          </div>
+          {% endfor %}
+
+          {% with totalprice|deliveryCharges as deliverycharges %}
+          <div class="row mb-3">
+            <span class="col float-start">Delivery Charges</span>
+            {% if deliverycharges == "FREE" %}
+            <span class="col text-success float-end">{{ deliverycharges }}</span>
+            {% else %}
+            <span class="col text float-end">{{ deliverycharges }}</span>
+            {% endif %}
+            
+          </div>
+          <hr class="bg-success border-2 border-top border-success"></hr>
+          <div class="row mb-3">
+            <span class="col float-start"><strong>Total</strong></span>
+            <span class="col  float-end">₹{{ totalprice|total:deliverycharges }}</span>
+          </div>
+          
+          {% endwith %}
+         
+         
+        </div>
+      </div>
+     
+    </div>
+    
+    {% endif %}
+</div>
+
+
+  <div class="container">
+
+    <input type="button" class="btn btn-success mb-5" id="addressToggle" onclick=addAddress() value="Add new address" style="display: block;"/>
+    <main class="form-address m-auto mt-5 w-75 bg-warning p-5 bg-opacity-75" id="addaddress" style="display: none">
+      <form id="addressform" method="POST" action="{% url 'address' %}">
+        {% csrf_token %}
+
+        <h1 class="h3 mb-3 fw-normal">Enter your Address</h1>
+        <div class="row g-2">
+          <div class="col">
+            <div class="form-floating">
+              {{form.name}}
+              <label for="floatingInput">Name</label>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-floating">
+              {{form.phone}}
+              <label for="floatingInput">Contact Number</label>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-floating">
+              {{form.pincode}}
+              <label for="floatingInput">Pincode</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-2">
+          <div class="col">
+            <div class="form-floating">
+              {{form.locality}}
+              <label for="floatingInput">Locality</label>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-floating">
+              {{form.address}}
+              <label for="floatingInput">Address</label>
+            </div>
+          </div>
+        </div>
+        <div class="row g-2">
+          <div class="col">
+            <div class="form-floating">
+              {{form.city}}
+              <label for="floatingInput">City</label>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-floating">
+              {{form.state}}
+              <label for="floatingInput">State</label>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-floating">
+              {% comment %}
+              <select
+                class="form-select"
+                id="floatingSelect"
+                aria-label="Floating label select example"
+              >
+                {% endcomment %} {{form.addresstype}} {% comment %}
+              </select>
+              {% endcomment %}
+              <label for="floatingSelect">What is the type of address?</label>
+            </div>
+          </div>
+        </div>
+        <br />
+        <div class="d-flex">
+
+          <button class="w-50 btn btn-sm btn-primary me-3" id="submitBtn" type="submit">
+            Add this address
+          </button>
+          <button class="w-50 btn btn-sm btn-danger" id="=cancelBtn" onclick=cancelForm()>
+            Cancel
+          </button>
+        </div>
+      </form>
+    </main>
+  </div>
+
+
+
+  <script>
+    var form_fields = document.getElementsByTagName('input')
+    var select = document.getElementById('id_addresstype')
+    select.className += "form-select w-75 my-3 "
+    console.log(form_fields)
+    {% comment %} console.log("select",select) {% endcomment %}
+
+    let i = 3
+
+    while (i<11){
+        if(i!=8){
+            form_fields[i].className += 'form-control my-3 w-75 rounded-0 ';
+        }
+        else{
+            form_fields[i].className += 'form-control my-3 w-100';
+        }
+        form_fields[i].id += 'floatingInput';
+        i++;
+    }
+
+    var x = document.getElementById("addaddress");
+    var btn = document.getElementById("addressToggle")
+    function addAddress(){
+    
+        var submitbtn = document.getElementById("submitBtn").innerHTML = "Add this Address"
+        if (x.style.display === "none") {
+
+          x.style.display = "block";
+          btn.value = "Cancel"
+          btn.className = "btn btn-danger"
+          document.getElementById('addressform').scrollIntoView();
+        } else {
+          document.getElementById('navbar').scrollIntoView();
+          x.style.display = "none";
+          btn.value = "Add new address"
+          btn.className = "btn btn-success"
+        }
+
+    }
+    function editAddress(aid){
+
+      var addbtn = document.getElementById("addressToggle")
+      var form = document.getElementById("addaddress");
+      var submitbtn = document.getElementById("submitBtn");
+
+      
+       console.log("hello",{{aid}})
+
+      const options = {method: 'GET'};
+
+      fetch('http://127.0.0.1:8000/checkout/address?aid='+aid, options)
+      .then(response => response.json())
+      .then(response => console.log(response))
+      .catch(err => console.error(err));
+
+
+      if(addbtn.style.display === "block"){
+          addAddress()
+          submitbtn.innerHTML = "Edit"
+
+      }
+    }
+    function cancelForm(){
+      x.style.display = "none";
+          btn.value = "Add new address"
+          btn.className = "btn btn-success"
+          document.getElementById('navbar').scrollIntoView();
+
+    }
+    function confirmOrder(address){
+      confirm("NEXT?")
+      console.log(address);
+    }
+    
+  </script>
+
+  {% endblock content %}
+</body>

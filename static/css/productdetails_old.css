@@ -1,0 +1,14 @@
+h1{
+    font-weight: 400;
+    font-size: 28px;
+}
+
+.text-product-title{
+    font-size: 24px!important;
+    line-height : 32px!important;
+}
+
+.productdetails-img{
+    height: 468px !important;
+    width : 800px !important;
+}
